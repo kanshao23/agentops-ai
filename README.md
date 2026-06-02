@@ -61,6 +61,8 @@ Not implemented yet:
 - Desktop app.
 - npm publication.
 
+Release readiness is automated through `.github/workflows/release-readiness.yml`, but npm publication remains manual for now.
+
 ## Quick Start
 
 From an existing project:
