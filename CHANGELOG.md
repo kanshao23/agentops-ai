@@ -14,5 +14,6 @@ Initial public scaffold.
 - Added diff evidence in review reports and JSON output.
 - Documented config, CLI JSON, and report JSON contracts.
 - Added release-readiness workflow for tag-based package validation.
+- Added public roadmap and contribution issue links.
 - Added Claude Code and Codex workflow templates.
 - Added GitHub Actions CI.

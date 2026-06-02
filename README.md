@@ -419,6 +419,8 @@ The repository also includes a GitHub Actions CI workflow that runs those checks
 
 ## Roadmap
 
+See [docs/roadmap.md](docs/roadmap.md) for tracked roadmap issues and contribution paths.
+
 Near-term:
 
 - Add config-driven command selection.
