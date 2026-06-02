@@ -13,5 +13,6 @@ Initial public scaffold.
 - Added real smoke URL checks for configured `smokeUrls`.
 - Added diff evidence in review reports and JSON output.
 - Documented config, CLI JSON, and report JSON contracts.
+- Added release-readiness workflow for tag-based package validation.
 - Added Claude Code and Codex workflow templates.
 - Added GitHub Actions CI.
