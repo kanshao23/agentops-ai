@@ -4,6 +4,7 @@ import { detectProject } from "../core/detect-project.js";
 import { scanEnv } from "../core/env-scanner.js";
 import { classifyShipStatus } from "../core/readiness.js";
 import { writeReport } from "../core/report-writer.js";
+import { runSmokeChecks } from "../core/smoke-checks.js";
 import type { CommandOutcome } from "../core/types.js";
 
 export async function shipCheck(cwd: string): Promise<CommandOutcome> {
@@ -19,6 +20,7 @@ export async function shipCheck(cwd: string): Promise<CommandOutcome> {
   for (const command of releaseCommands) {
     commandResults.push(await runCommand(command, cwd));
   }
+  commandResults.push(...(await runSmokeChecks(config.smokeUrls)));
 
   const status = classifyShipStatus({ commandResults, missingEnvKeys: env.missingKeys, gitDirty: config.allowDirty ? false : gitDirty });
   const failed = commandResults.filter((result) => result.exitCode !== 0);
