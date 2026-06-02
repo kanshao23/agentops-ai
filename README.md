@@ -105,6 +105,8 @@ agentops-ai audit --json
 agentops-ai ship-check --json
 ```
 
+For stable machine-readable fields, see [docs/contracts.md](docs/contracts.md).
+
 ### `agentops-ai doctor`
 
 Checks whether the local environment can run the toolkit.
