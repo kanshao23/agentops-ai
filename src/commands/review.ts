@@ -1,6 +1,7 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import { detectAgents } from "../core/agent-detection.js";
+import { parseDiffEvidence } from "../core/diff-evidence.js";
 import { writeReport } from "../core/report-writer.js";
 import type { CommandOutcome } from "../core/types.js";
 
@@ -17,19 +18,24 @@ async function getDiff(cwd: string): Promise<string> {
 
 export async function review(cwd: string): Promise<CommandOutcome> {
   const agents = await detectAgents();
-  const diff = await getDiff(cwd);
+  const diffEvidence = parseDiffEvidence(await getDiff(cwd));
   const available = [
     agents.claude ? "Claude Code available" : "Claude Code missing",
     agents.codex ? "Codex available" : "Codex missing"
   ];
-  const blockers = diff.length === 0 ? ["No git diff detected to review."] : [];
+  const blockers = diffEvidence.hasDiff ? [] : ["No git diff detected to review."];
   const report = await writeReport(cwd, {
     kind: "review",
     status: blockers.length > 0 ? "manual-review" : "prompt-ready",
     scope: `Diff review for ${cwd}`,
     commands: [],
-    verifiedFacts: available,
+    verifiedFacts: [
+      ...available,
+      `Changed files: ${diffEvidence.changedFiles.length}`,
+      ...diffEvidence.changedFiles.map((file) => `Changed file: ${file}`)
+    ],
     inferredRisks: [
+      diffEvidence.stat ? `Diff stat:\n${diffEvidence.stat}` : "No diff stat captured.",
       "v0 prepares local review context but does not claim a second agent reviewed unless invoked by the user."
     ],
     blockers,
@@ -45,6 +51,11 @@ export async function review(cwd: string): Promise<CommandOutcome> {
     ok: blockers.length === 0,
     status: blockers.length > 0 ? "manual-review" : "prompt-ready",
     reportPath: report.markdownPath,
-    details: { claude: agents.claude, codex: agents.codex, hasDiff: diff.length > 0 }
+    details: {
+      claude: agents.claude,
+      codex: agents.codex,
+      hasDiff: diffEvidence.hasDiff,
+      changedFiles: diffEvidence.changedFiles
+    }
   };
 }
