@@ -17,5 +17,6 @@ Initial public scaffold.
 - Added public roadmap and contribution issue links.
 - Added `--version` output and Remix framework detection.
 - Added GitHub issue templates, pull request template, badges, and security policy.
+- Added named smoke profiles with method, expected status, and safe header references.
 - Added Claude Code and Codex workflow templates.
 - Added GitHub Actions CI.

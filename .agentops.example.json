@@ -7,5 +7,16 @@
     { "kind": "build", "command": "npm run build" }
   ],
   "smokeUrls": ["http://localhost:3000/health"],
+  "smokeProfiles": [
+    {
+      "name": "api-health",
+      "url": "http://localhost:3000/api/health",
+      "method": "GET",
+      "expectedStatus": [200, 204],
+      "headers": {
+        "Authorization": "env:SMOKE_TOKEN"
+      }
+    }
+  ],
   "allowDirty": false
 }

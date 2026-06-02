@@ -14,10 +14,19 @@ export type VerificationCommand = {
   command: string;
 };
 
+export type SmokeProfile = {
+  name: string;
+  url: string;
+  method: "GET" | "HEAD" | "POST";
+  expectedStatus: number[];
+  headers: Record<string, string>;
+};
+
 export type AgentOpsConfig = {
   version: number;
   commands: VerificationCommand[];
   smokeUrls: string[];
+  smokeProfiles: SmokeProfile[];
   allowDirty: boolean;
 };
 

@@ -20,14 +20,6 @@ Goal: let users explicitly configure Claude Code and Codex review lanes while pr
 
 Guardrail: never claim a second agent reviewed unless the command actually ran and produced evidence.
 
-### Browser and API Smoke Profiles
-
-Issue: [#10](https://github.com/kanshao23/agentops-ai/issues/10)
-
-Goal: let projects define named smoke profiles with URLs, expected status ranges, and safe headers.
-
-Guardrail: do not require a browser or production URL by default.
-
 ### More Framework Detection
 
 Issue: [#11](https://github.com/kanshao23/agentops-ai/issues/11)
@@ -43,6 +35,7 @@ Good starter shape:
 ## Later Work
 
 - GitHub Action wrapper for PR comments.
+- Browser-backed smoke checks for workflows that need real rendering.
 - Release note generation from reports.
 - Project memory update workflow.
 - npm publication.
