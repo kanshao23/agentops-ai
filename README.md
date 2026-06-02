@@ -2,6 +2,11 @@
 
 **Reliability workflows for Claude Code and Codex.**
 
+[![CI](https://github.com/kanshao23/agentops-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/kanshao23/agentops-ai/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Node.js >=20](https://img.shields.io/badge/node-%3E%3D20-339933.svg)](package.json)
+[![Status: early v0](https://img.shields.io/badge/status-early%20v0-orange.svg)](README.md)
+
 `agentops-ai` is an open-source toolkit that helps developers verify whether AI-generated code is actually ready to demo, merge, or ship.
 
 The core idea is simple:
@@ -51,12 +56,12 @@ Implemented now:
 - Markdown reports under `.agentops/reports/`.
 - JSON run metadata under `.agentops/runs/`.
 - Local Claude Code and Codex workflow files.
+- Configured smoke URL checks.
+- GitHub Actions CI and release-readiness workflow.
 
 Not implemented yet:
 
 - Automatic dual-agent execution.
-- GitHub Action workflow.
-- Browser smoke configuration.
 - Hosted dashboard.
 - Desktop app.
 - npm publication.
@@ -65,11 +70,13 @@ Release readiness is automated through `.github/workflows/release-readiness.yml`
 
 ## Quick Start
 
-From an existing project:
+The package is not published to npm yet. For now, run it from GitHub or from a local clone.
+
+From GitHub:
 
 ```bash
-npx agentops-ai init
-npx agentops-ai audit
+npx github:kanshao23/agentops-ai doctor
+npx github:kanshao23/agentops-ai audit
 ```
 
 Optional project config:
@@ -84,7 +91,7 @@ Then edit `.agentops/config.json` to choose the commands that define reliability
 Optional global install:
 
 ```bash
-npm install -g agentops-ai
+npm install -g github:kanshao23/agentops-ai
 agentops-ai init
 agentops-ai audit
 ```
@@ -96,6 +103,12 @@ npm install
 npm test
 npm run build
 node dist/cli.js doctor
+```
+
+After npm publication, the intended command will be:
+
+```bash
+npx agentops-ai audit
 ```
 
 ## Commands
@@ -158,7 +171,7 @@ Runs a local readiness audit.
 It detects:
 
 - Package manager: `npm`, `pnpm`, `yarn`, or `bun`.
-- Framework signals such as Next.js, Vite, React, Vue, Svelte, Astro, and Express.
+- Framework signals such as Next.js, Vite, React, Vue, Svelte, Astro, Express, and Remix.
 - Verification scripts: `lint`, `typecheck`, `test`, and `build`.
 - Documented env keys from `.env.example`, `.env.sample`, or `.env.template`.
 - Available local env keys from `.env` and `.env.local`, without printing values.
@@ -458,6 +471,8 @@ It is a reliability layer:
 ## Contributing
 
 Issues and pull requests are welcome.
+
+For contribution details, see [CONTRIBUTING.md](CONTRIBUTING.md). For security expectations, see [SECURITY.md](SECURITY.md).
 
 Good first contributions:
 

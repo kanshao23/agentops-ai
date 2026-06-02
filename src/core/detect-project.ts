@@ -27,6 +27,7 @@ function detectFrameworkNames(packageJson: Record<string, unknown>): string[] {
   for (const name of ["next", "vite", "react", "vue", "svelte", "astro", "express"]) {
     if (deps[name]) frameworks.push(name);
   }
+  if (deps["@remix-run/react"] || deps["@remix-run/node"] || deps["@remix-run/dev"]) frameworks.push("remix");
   return frameworks;
 }
 

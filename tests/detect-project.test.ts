@@ -32,4 +32,19 @@ describe("detectProject", () => {
       "build"
     ]);
   });
+
+  test("detects Remix framework signal", async () => {
+    const cwd = await mkdtemp(join(tmpdir(), "agentops-remix-"));
+    await writeFile(
+      join(cwd, "package.json"),
+      JSON.stringify({
+        dependencies: { "@remix-run/react": "2.0.0" },
+        scripts: { build: "remix vite:build" }
+      })
+    );
+
+    const project = await detectProject(cwd);
+
+    expect(project.frameworks).toContain("remix");
+  });
 });
