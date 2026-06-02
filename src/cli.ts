@@ -6,6 +6,8 @@ import { review } from "./commands/review.js";
 import { shipCheck } from "./commands/ship-check.js";
 import type { CommandOutcome } from "./core/types.js";
 
+const version = "0.0.1";
+
 function usage(): void {
   console.log(`agentops-ai
 
@@ -49,6 +51,10 @@ async function main(): Promise<number> {
   const command = process.argv[2];
   const json = process.argv.includes("--json");
   const cwd = process.cwd();
+  if (command === "--version" || command === "-v") {
+    console.log(version);
+    return 0;
+  }
   if (!command || command === "--help" || command === "-h") {
     usage();
     return 0;

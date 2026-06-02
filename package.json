@@ -20,11 +20,15 @@
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "dev": "tsx src/cli.ts",
-    "prepack": "npm run build"
+    "prepare": "npm run build"
   },
   "files": [
     "dist",
+    "docs",
     "README.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
     "LICENSE",
     ".agentops.example.json"
   ],
