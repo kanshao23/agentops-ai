@@ -16,6 +16,17 @@ This document describes the machine-readable contracts that external scripts, CI
     { "kind": "build", "command": "npm run build" }
   ],
   "smokeUrls": ["http://localhost:3000/health"],
+  "smokeProfiles": [
+    {
+      "name": "api-health",
+      "url": "http://localhost:3000/api/health",
+      "method": "GET",
+      "expectedStatus": [200, 204],
+      "headers": {
+        "Authorization": "env:SMOKE_TOKEN"
+      }
+    }
+  ],
   "allowDirty": false
 }
 ```
@@ -24,8 +35,21 @@ This document describes the machine-readable contracts that external scripts, CI
 
 - `version`: config format version. Current value is `1`.
 - `commands`: optional explicit verification commands. If empty, commands are detected from package scripts.
-- `smokeUrls`: HTTP URLs to request during `audit` and `ship-check`.
+- `smokeUrls`: simple HTTP URLs to request during `audit` and `ship-check`. They pass on 2xx/3xx responses.
+- `smokeProfiles`: named HTTP checks with method, expected status codes, and optional headers.
 - `allowDirty`: when `true`, `ship-check` does not downgrade status because of uncommitted changes.
+
+### Smoke Profiles
+
+Smoke profile fields:
+
+- `name`: human-readable check name included in reports.
+- `url`: URL to request.
+- `method`: `GET`, `HEAD`, or `POST`. Defaults to `GET`.
+- `expectedStatus`: exact acceptable HTTP status codes. If empty, 2xx/3xx responses pass.
+- `headers`: optional header map. Values may be literals or `env:KEY` references.
+
+Header values are never printed in reports. Reports include only header names.
 
 ### Command Kinds
 

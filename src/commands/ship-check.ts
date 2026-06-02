@@ -20,7 +20,7 @@ export async function shipCheck(cwd: string): Promise<CommandOutcome> {
   for (const command of releaseCommands) {
     commandResults.push(await runCommand(command, cwd));
   }
-  commandResults.push(...(await runSmokeChecks(config.smokeUrls)));
+  commandResults.push(...(await runSmokeChecks({ urls: config.smokeUrls, profiles: config.smokeProfiles })));
 
   const status = classifyShipStatus({ commandResults, missingEnvKeys: env.missingKeys, gitDirty: config.allowDirty ? false : gitDirty });
   const failed = commandResults.filter((result) => result.exitCode !== 0);

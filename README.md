@@ -57,6 +57,7 @@ Implemented now:
 - JSON run metadata under `.agentops/runs/`.
 - Local Claude Code and Codex workflow files.
 - Configured smoke URL checks.
+- Named smoke profiles with method, expected status, and safe header references.
 - GitHub Actions CI and release-readiness workflow.
 
 Not implemented yet:
@@ -86,7 +87,7 @@ mkdir -p .agentops
 cp .agentops.example.json .agentops/config.json
 ```
 
-Then edit `.agentops/config.json` to choose the commands that define reliability for your project.
+Then edit `.agentops/config.json` to choose the commands and smoke profiles that define reliability for your project.
 
 Optional global install:
 
@@ -176,6 +177,7 @@ It detects:
 - Documented env keys from `.env.example`, `.env.sample`, or `.env.template`.
 - Available local env keys from `.env` and `.env.local`, without printing values.
 - Git dirty state.
+- Configured smoke URLs and smoke profiles.
 
 Readiness statuses:
 

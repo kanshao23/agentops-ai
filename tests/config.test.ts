@@ -13,6 +13,15 @@ describe("loadConfig", () => {
       JSON.stringify({
         commands: [{ kind: "custom", command: "npm run check:all" }],
         smokeUrls: ["http://localhost:3000/health"],
+        smokeProfiles: [
+          {
+            name: "api",
+            url: "http://localhost:3000/api/health",
+            method: "HEAD",
+            expectedStatus: [200, 204],
+            headers: { Authorization: "env:SMOKE_TOKEN" }
+          }
+        ],
         allowDirty: true
       })
     );
@@ -22,6 +31,15 @@ describe("loadConfig", () => {
 
     expect(config.commands).toEqual([{ kind: "custom", command: "npm run check:all" }]);
     expect(config.smokeUrls).toEqual(["http://localhost:3000/health"]);
+    expect(config.smokeProfiles).toEqual([
+      {
+        name: "api",
+        url: "http://localhost:3000/api/health",
+        method: "HEAD",
+        expectedStatus: [200, 204],
+        headers: { Authorization: "env:SMOKE_TOKEN" }
+      }
+    ]);
     expect(config.allowDirty).toBe(true);
   });
 
@@ -32,6 +50,7 @@ describe("loadConfig", () => {
 
     expect(config.commands).toEqual([]);
     expect(config.smokeUrls).toEqual([]);
+    expect(config.smokeProfiles).toEqual([]);
     expect(config.allowDirty).toBe(false);
   });
 });
