@@ -70,6 +70,15 @@ npx agentops-ai init
 npx agentops-ai audit
 ```
 
+Optional project config:
+
+```bash
+mkdir -p .agentops
+cp .agentops.example.json .agentops/config.json
+```
+
+Then edit `.agentops/config.json` to choose the commands that define reliability for your project.
+
 Optional global install:
 
 ```bash
@@ -88,6 +97,13 @@ node dist/cli.js doctor
 ```
 
 ## Commands
+
+All commands support human-readable output by default and machine-readable output with `--json`.
+
+```bash
+agentops-ai audit --json
+agentops-ai ship-check --json
+```
 
 ### `agentops-ai doctor`
 
@@ -219,8 +235,10 @@ JSON metadata:
 Every report contains:
 
 - Status.
+- Summary.
 - Scope.
 - Commands run.
+- Command output snippets.
 - Verified facts.
 - Inferred risks.
 - Blockers.
@@ -390,7 +408,10 @@ Expected checks before opening a PR:
 npm test
 npm run build
 npm audit --audit-level=critical
+npm pack --dry-run
 ```
+
+The repository also includes a GitHub Actions CI workflow that runs those checks on every push to `main` and on pull requests.
 
 ## Roadmap
 

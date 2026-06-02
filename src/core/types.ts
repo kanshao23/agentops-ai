@@ -14,6 +14,13 @@ export type VerificationCommand = {
   command: string;
 };
 
+export type AgentOpsConfig = {
+  version: number;
+  commands: VerificationCommand[];
+  smokeUrls: string[];
+  allowDirty: boolean;
+};
+
 export type CommandResult = VerificationCommand & {
   exitCode: number;
   stdout?: string;
@@ -50,4 +57,12 @@ export type ReportInput = {
 export type WrittenReport = {
   markdownPath: string;
   jsonPath: string;
+};
+
+export type CommandOutcome = {
+  command: string;
+  ok: boolean;
+  status?: string;
+  reportPath?: string;
+  details?: Record<string, unknown>;
 };

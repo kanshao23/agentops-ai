@@ -19,11 +19,24 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "dev": "tsx src/cli.ts"
+    "dev": "tsx src/cli.ts",
+    "prepack": "npm run build"
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE",
+    ".agentops.example.json"
+  ],
+  "keywords": [
+    "ai",
+    "agents",
+    "claude-code",
+    "codex",
+    "cli",
+    "code-review",
+    "release-checklist",
+    "testing"
   ],
   "engines": {
     "node": ">=20"

@@ -2,6 +2,7 @@ import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import { detectAgents } from "../core/agent-detection.js";
 import { writeReport } from "../core/report-writer.js";
+import type { CommandOutcome } from "../core/types.js";
 
 const execAsync = promisify(exec);
 
@@ -14,7 +15,7 @@ async function getDiff(cwd: string): Promise<string> {
   }
 }
 
-export async function review(cwd: string): Promise<number> {
+export async function review(cwd: string): Promise<CommandOutcome> {
   const agents = await detectAgents();
   const diff = await getDiff(cwd);
   const available = [
@@ -39,6 +40,11 @@ export async function review(cwd: string): Promise<number> {
     knownGaps: ["Automatic dual-agent execution is outside v0."]
   });
 
-  console.log(`Review report: ${report.markdownPath}`);
-  return blockers.length > 0 ? 1 : 0;
+  return {
+    command: "review",
+    ok: blockers.length === 0,
+    status: blockers.length > 0 ? "manual-review" : "prompt-ready",
+    reportPath: report.markdownPath,
+    details: { claude: agents.claude, codex: agents.codex, hasDiff: diff.length > 0 }
+  };
 }

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "commands": [
+    { "kind": "lint", "command": "npm run lint" },
+    { "kind": "typecheck", "command": "npm run typecheck" },
+    { "kind": "test", "command": "npm test" },
+    { "kind": "build", "command": "npm run build" }
+  ],
+  "smokeUrls": ["http://localhost:3000/health"],
+  "allowDirty": false
+}

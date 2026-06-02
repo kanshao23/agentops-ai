@@ -1,6 +1,7 @@
 import { access } from "node:fs/promises";
 import { join } from "node:path";
 import { detectAgents } from "../core/agent-detection.js";
+import type { CommandOutcome } from "../core/types.js";
 
 async function canWriteAgentOps(cwd: string): Promise<boolean> {
   try {
@@ -11,13 +12,18 @@ async function canWriteAgentOps(cwd: string): Promise<boolean> {
   }
 }
 
-export async function doctor(cwd: string): Promise<number> {
+export async function doctor(cwd: string): Promise<CommandOutcome> {
   const agents = await detectAgents();
   const writable = await canWriteAgentOps(cwd);
-  console.log("agentops-ai doctor");
-  console.log(`node: ${process.version}`);
-  console.log(`claude: ${agents.claude ? "found" : "missing"}`);
-  console.log(`codex: ${agents.codex ? "found" : "missing"}`);
-  console.log(`workspace writable: ${writable ? "yes" : "no"}`);
-  return writable ? 0 : 1;
+  return {
+    command: "doctor",
+    ok: writable,
+    status: writable ? "ready" : "blocked",
+    details: {
+      node: process.version,
+      claude: agents.claude,
+      codex: agents.codex,
+      workspaceWritable: writable
+    }
+  };
 }

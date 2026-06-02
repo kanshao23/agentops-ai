@@ -11,7 +11,7 @@ describe("writeReport", () => {
       kind: "audit",
       status: "demo-ready",
       scope: "test repo",
-      commands: [],
+      commands: [{ kind: "test", command: "npm test", exitCode: 1, stderr: "expected failure output" }],
       verifiedFacts: ["package.json found"],
       inferredRisks: ["No test script found"],
       blockers: [],
@@ -23,6 +23,9 @@ describe("writeReport", () => {
     const json = await readFile(result.jsonPath, "utf8");
 
     expect(markdown).toContain("# agentops-ai audit report");
+    expect(markdown).toContain("## Summary");
+    expect(markdown).toContain("## Command Output");
+    expect(markdown).toContain("expected failure output");
     expect(markdown).toContain("package.json found");
     expect(JSON.parse(json).status).toBe("demo-ready");
   });

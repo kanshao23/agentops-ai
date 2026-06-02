@@ -1,15 +1,19 @@
 import { getGitDirty, runCommand } from "../core/command-runner.js";
+import { loadConfig } from "../core/config.js";
 import { detectProject } from "../core/detect-project.js";
 import { scanEnv } from "../core/env-scanner.js";
 import { classifyReadiness } from "../core/readiness.js";
 import { writeReport } from "../core/report-writer.js";
+import type { CommandOutcome } from "../core/types.js";
 
-export async function audit(cwd: string): Promise<number> {
+export async function audit(cwd: string): Promise<CommandOutcome> {
   const project = await detectProject(cwd);
+  const config = await loadConfig(cwd);
   const env = await scanEnv(cwd);
   const gitDirty = await getGitDirty(cwd);
   const commandResults = [];
-  for (const command of project.verificationCommands) {
+  const verificationCommands = config.commands.length > 0 ? config.commands : project.verificationCommands;
+  for (const command of verificationCommands) {
     commandResults.push(await runCommand(command, cwd));
   }
 
@@ -34,10 +38,15 @@ export async function audit(cwd: string): Promise<number> {
     inferredRisks: env.missingKeys.map((key) => `Documented env key is not available locally: ${key}`),
     blockers: failed.map((result) => `Command failed: ${result.command}`),
     nextAction: failed.length > 0 ? `Fix ${failed[0].command} and rerun audit.` : "Run ship-check before release.",
-    knownGaps: ["No browser smoke URL is configured in v0."]
+    knownGaps: config.smokeUrls.length > 0 ? [] : ["No browser smoke URL is configured."]
   });
 
-  console.log(`Status: ${status}`);
-  console.log(`Report: ${report.markdownPath}`);
-  return failed.length > 0 || status === "production-blocked" || status === "not-runnable" ? 1 : 0;
+  const ok = !(failed.length > 0 || status === "production-blocked" || status === "not-runnable");
+  return {
+    command: "audit",
+    ok,
+    status,
+    reportPath: report.markdownPath,
+    details: { commandsRun: commandResults.length, failedCommands: failed.length }
+  };
 }
